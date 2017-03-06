@@ -45,3 +45,15 @@ Detect and describle the shape of following objects from the high resolution sat
 | SWIR-6 | SWIR | 2185 - 2225 nm |
 | SWIR-7 | SWIR | 2235 - 2285 nm |
 | SWIR-8 | SWIR | 2295 - 2365 nm |
+
+## Use Docker
+
+Docker is a container engine that stabilizes the runtime environment. A Dockerfile is included in the project. And the image has been pushed to DockerHub. https://cloud.docker.com/swarm/junjchen90/repository/docker/junjchen90/jarvis-machine/general 
+
+After installed Docker, run the following command in the cloned repo's directory:
+
+```
+docker run -ti --name app -v `pwd`:/app junjchen90/jarvis-machine:latest
+```
+
+Is will start a bash and you're in the container. (The command pulls images from DockerHub, starts it as a container named "app" and mount the current working directory to container's /app directory)
