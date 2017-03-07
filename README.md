@@ -17,6 +17,10 @@ Detect and describle the shape of following objects from the high resolution sat
 
 ## Image file information
 
+Total images: 450 * 4
+
+Training images: 25
+
 | File | Bands | Resolution | Color depth |
 | --- | --- | --- | --- |
 | xxx_x_x | Red, Green, Blue | 0.31m | 11 bits |
