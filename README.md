@@ -2,7 +2,7 @@
 
 ## Goal
 
-Detect and describle the shape of following objects from the high resolution satellite image
+Detect and describe the shape of following objects from the high resolution satellite image
 
 1. Buildings - large building, residential, non-residential, fuel storage facility, fortified building
 2. Misc. Manmade structures 
@@ -17,11 +17,28 @@ Detect and describle the shape of following objects from the high resolution sat
 
 ## Image file information
 
-Total images: 450 * 4
+WorldView-3 products are delivered to the customer as relative **radiometrically corrected** image pixels. Their values are a
+function of how much spectral radiance enters the telescope aperture and the instrument conversion of that radiation into a
+digital signal. 
 
-Training images: 25
+### Data sample counts
 
-'6040_2_2' '6120_2_2' '6120_2_0' '6090_2_0' '6040_1_3' '6040_1_0' '6100_1_3' '6010_4_2' '6110_4_0' '6140_3_1' '6110_1_2' '6100_2_3' '6150_2_3' '6160_2_1' '6140_1_2' '6110_3_1' '6010_4_4' '6170_2_4' '6170_4_1' '6170_0_4' '6060_2_3' '6070_2_3' '6010_1_2' '6040_4_4' '6100_2_2'
+* Total images: 450 * 4
+* Training data: 25
+    * 6010_1_2, 6010_4_2, 6010_4_4
+    * 6040_1_0, 6040_1_3, 6040_2_2, 6040_4_4
+    * 6060_2_3
+    * 6070_2_3
+    * 6090_2_0
+    * 6100_1_3, 6100_2_2, 6100_2_3
+    * 6110_1_2, 6110_3_1, 6110_4_0
+    * 6120_2_0, 6120_2_2
+    * 6140_1_2, 6140_3_1
+    * 6150_2_3
+    * 6160_2_1
+    * 6170_0_4, 6170_2_4, 6170_4_1
+
+### Image files
 
 | File | Bands | Resolution | Color depth |
 | --- | --- | --- | --- |
@@ -52,7 +69,7 @@ Training images: 25
 | SWIR-7 | SWIR | 2235 - 2285 nm |
 | SWIR-8 | SWIR | 2295 - 2365 nm |
 
-## Use Docker
+## Using Docker
 
 Docker is a container engine that stabilizes the runtime environment. A Dockerfile is included in the project. And the image has been pushed to DockerHub. https://cloud.docker.com/swarm/junjchen90/repository/docker/junjchen90/jarvis-machine/general 
 

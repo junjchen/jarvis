@@ -8,7 +8,7 @@ Object refelect or absorb sun's radiation varies. The difference can be used to 
 
 ![Spectral signatures of soil, vegetation and water, and spectral bands of LANDSAT 7.](http://www.seos-project.eu/modules/remotesensing/images/Reflexionskurven.jpg)
 
-## Result
+## Proof of concept
 
 By plotting spectral values on BAND 7 and BAND 8, shows the picture below.
 
