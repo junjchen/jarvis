@@ -40,12 +40,12 @@ digital signal.
 
 ### Image files
 
-| File | Bands | Resolution | Color depth |
-| --- | --- | --- | --- |
-| xxx_x_x | Red, Green, Blue | 0.31m | 11 bits |
-| xxx_x_x_A | 8 SWIR Bands | 7.5m | 14 bits |
-| xxx_x_x_M | 8 Multispectral Bands | 1.24m | 11 bits |
-| xxx_x_x_P | Panchromatic, greyscale, single band | 0.31m | 11 bits |
+| File | Size (Rows x Cols) | Bands | Resolution | Color depth |
+| --- | --- | --- | --- | --- |
+| xxx_x_x | 3349 x 3396| Red, Green, Blue | 0.31m | 11 bits |
+| xxx_x_x_A | 134 x 136 | 8 SWIR Bands | 7.5m | 14 bits |
+| xxx_x_x_M | 837 x 849 | 8 Multispectral Bands | 1.24m | 11 bits |
+| xxx_x_x_P | 3348 x 3396 | Panchromatic, greyscale, single band | 0.31m | 11 bits |
 
 ## Sensor bands information
 
@@ -80,3 +80,11 @@ docker run -ti --name app -v `pwd`:/app junjchen90/jarvis-machine:latest
 ```
 
 Is will start a bash and you're in the container. (The command pulls images from DockerHub, starts it as a container named "app" and mount the current working directory to container's /app directory)
+
+## Classification methods
+
+![classification methods](https://raw.githubusercontent.com/junjchen/jarvis/master/clsfy_methods.png)
+
+## References
+
+Abburu S, Golla S B. Satellite image classification methods and techniques: A review[J]. International journal of computer applications, 2015, 119(8).
