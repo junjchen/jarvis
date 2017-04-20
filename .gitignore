@@ -89,3 +89,6 @@ ENV/
 .ropeproject
 
 .idea/
+.DS_Store
+Vagrantfile
+.vagrant/
