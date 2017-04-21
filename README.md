@@ -76,10 +76,15 @@ Docker is a container engine that stabilizes the runtime environment. A Dockerfi
 After installed Docker, run the following command in the cloned repo's directory:
 
 ```
-docker run -ti --name app -v `pwd`:/app junjchen90/jarvis-machine:latest
+docker run -ti --name app -v `pwd`:/app junjchen90/jarvis:latest
 ```
 
 Is will start a bash and you're in the container. (The command pulls images from DockerHub, starts it as a container named "app" and mount the current working directory to container's /app directory)
+
+launch jupyter
+```
+jupyter notebook --ip 0.0.0.0 --allow-root --NotebookApp.iopub_data_rate_limit=10000000000
+```
 
 ## Classification methods
 
