@@ -18,6 +18,13 @@ By plotting spectral values on BAND 7 and BAND 8, shows the picture below.
 
 ![spectral-analysis on water](https://raw.githubusercontent.com/junjchen/jarvis/master/water_body_extraction/spectral-analysis.png)
 
+## Methods
+
+### Decision tree
+
+- ID3
+- C4.5
+
 
 
 ## References

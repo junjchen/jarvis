@@ -47,7 +47,8 @@ RUN pip install geojson && \
     pip install scikit-learn && \
     pip install scipy && \
     pip install descartes && \
-    pip install awscli --ignore-installed six
+    pip install awscli --ignore-installed six && \
+    pip install plotly
 
 # Fix error
 RUN ln /dev/null /dev/raw1394
