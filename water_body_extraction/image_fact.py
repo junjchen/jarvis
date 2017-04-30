@@ -5,10 +5,15 @@ csv.field_size_limit(sys.maxsize)
 
 import tifffile as tiff
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
 import shapely.wkt
 import shapely.affinity
 import cv2
+
+matplotlib.use('Agg')
+
+from sklearn import preprocessing
 
 import plotly.plotly as py
 import plotly.figure_factory as ff
@@ -41,7 +46,9 @@ class ImageFact:
         #self.img_a = self._scale_image(img_a)        
         self.img_m = self._scale_image(img_m)
         self.img_rgb = self._scale_image(img_rgb)
-                
+        
+        self.img_m_std = self._preprocess_image(self.img_m)
+
         # plot image
         plt.imshow(cv2.convertScaleAbs(self.img_rgb, alpha=(255.0/2048.0)))
 
@@ -49,7 +56,10 @@ class ImageFact:
         (h, w, _) = img.shape
         scaled = cv2.resize(img, (self.w, self.h))
         return scaled
-    
+        
+    def _preprocess_image(self, img):
+        return preprocessing.scale(img)
+
     def _read_train_polygons(self):
         self.train_polygons = {}
         
@@ -96,7 +106,7 @@ class ImageFact:
         return (dn_mean_formatted, dn_std_formatted, dn_max_formatted, dn_min_formatted, dn_mean, dn_std, dn_max, dn_min)
     
     def _read_training_data(self):
-        self.tr_img_m = np.dstack((self.img_m, self.combined_labels))
+        self.tr_img_m = np.dstack((self.img_m_std, self.combined_labels))
         self.tr_img_m_water_dn = self.tr_img_m[1 == self.tr_img_m[:,:,8]]
         self.tr_img_m_non_water_dn = self.tr_img_m[0 == self.tr_img_m[:,:,8]]
         
@@ -180,7 +190,7 @@ class ImageFact:
                     tp += 1
                 else:
                     fp += 1
-
+        self.analyze_result(tp, tn, fp, fn)
         return tp, tn, fp, fn
     
     def analyze_result(self, tp, tn, fp, fn):
