@@ -82,7 +82,9 @@ class Images:
         pos = stacked[1 == stacked[:, :, 1]][:, 0]
         neg = stacked[0 == stacked[:, :, 1]][:, 0]
 
-        plt.hist(pos, bins=200, label='Pos')
+        if pos:
+            plt.hist(pos, bins=200, label='Pos')
+
         plt.hist(neg, bins=200, histtype='stepfilled', color='r', alpha=0.5, label='Neg')
         plt.legend()
         plt.show()
