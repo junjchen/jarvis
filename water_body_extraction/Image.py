@@ -36,7 +36,7 @@ class Images:
 
         self.imgs['rgb'] = cv2.resize(img_rgb, (iw, ih))
         #self.img_p = tiff.imread('input/%s_P.tif'%self.img_id)
-        #self.img_a = tiff.imread('input/%s_A.tif'%self.img_id).transpose((1, 2, 0))
+        self.imgs['a'] = cv2.resize(tiff.imread('input/%s_A.tif'%self.img_id).transpose((1, 2, 0)), (iw, ih))
         self.imgs['m'] = cv2.resize(tiff.imread('input/%s_M.tif'%self.img_id).transpose((1, 2, 0)), (iw, ih))
 
         self.h = ih
@@ -45,7 +45,7 @@ class Images:
     def preview(self):
         plt.imshow(cv2.convertScaleAbs(self.imgs['rgb'], alpha=(255.0/2048.0)))
     
-    def mask_of(self, labels):
+    def mask_of(self, labels, preview = True):
         label_masks = {}
 
         for _im_id, _x, _y in csv.reader(open('../input/grid_sizes.csv')):
@@ -70,19 +70,24 @@ class Images:
         for k in label_masks:
             combined_label_mask = np.bitwise_or(combined_label_mask, label_masks[k])
         
-        plt.imshow(combined_label_mask)
+        if preview:
+            plt.imshow(combined_label_mask)
+
         return combined_label_mask
     
+    def mean_removal(self, image):
+        return preprocessing.scale(image.flatten())
+
     def apply_mask(self, img, band, mask, standardize = True):
         image = self.imgs[img][:, :, band-1]
         if standardize:
-            image = preprocessing.scale(image)
+            image = self.mean_removal(image)
         
-        stacked = np.dstack((image, mask))
-        pos = stacked[1 == stacked[:, :, 1]][:, 0]
-        neg = stacked[0 == stacked[:, :, 1]][:, 0]
-
-        if pos:
+        flat_mask = mask.flatten()
+        pos = image[1 == flat_mask]
+        neg = image[0 == flat_mask]
+        
+        if pos.any():
             plt.hist(pos, bins=200, label='Pos')
 
         plt.hist(neg, bins=200, histtype='stepfilled', color='r', alpha=0.5, label='Neg')
@@ -95,12 +100,11 @@ class Images:
         tp = tn = fp = fn = 0
         image = self.imgs[img][:, :, band-1]
         if standardize:
-            image = preprocessing.scale(image)
+            image = self.mean_removal(image)
 
-        data = np.dstack((image, mask)).reshape(-1, 2)
-        for d in data:
-            dn = d[0]
-            lb = d[1]
+        flat_mask = mask.flatten()
+        for i, dn in enumerate(image):
+            lb = flat_mask[i]
             if lower_limit >= dn or upper_limit <= dn:
                 if lb == 0:
                     tn += 1
@@ -112,12 +116,35 @@ class Images:
                 else:
                     fp += 1
 
-        mask_preview = np.ones((self.h, self.w), np.uint8)
+        mask_preview = np.ones(self.h * self.w, np.uint8)
         upper_indecies = np.where(image >= upper_limit)
         lower_indecies = np.where(image <= lower_limit)
         mask_preview[upper_indecies] = 0
         mask_preview[lower_indecies] = 0
 
-        plt.imshow(mask_preview)
+        plt.imshow(mask_preview.reshape(self.h, self.w))
 
         return (tp, tn, fp, fn)
+    
+    def get_all_tr_data(self):
+        return np.vstack((
+            self.mean_removal(self.imgs['rgb'][:, :, 0]),
+            self.mean_removal(self.imgs['rgb'][:, :, 1]),
+            self.mean_removal(self.imgs['rgb'][:, :, 2]),
+            self.mean_removal(self.imgs['m'][:, :, 0]),
+            self.mean_removal(self.imgs['m'][:, :, 1]),
+            self.mean_removal(self.imgs['m'][:, :, 2]),
+            self.mean_removal(self.imgs['m'][:, :, 3]),
+            self.mean_removal(self.imgs['m'][:, :, 4]),
+            self.mean_removal(self.imgs['m'][:, :, 5]),
+            self.mean_removal(self.imgs['m'][:, :, 6]),
+            self.mean_removal(self.imgs['m'][:, :, 7]),
+            self.mean_removal(self.imgs['a'][:, :, 0]),
+            self.mean_removal(self.imgs['a'][:, :, 1]),
+            self.mean_removal(self.imgs['a'][:, :, 2]),
+            self.mean_removal(self.imgs['a'][:, :, 3]),
+            self.mean_removal(self.imgs['a'][:, :, 4]),
+            self.mean_removal(self.imgs['a'][:, :, 5]),
+            self.mean_removal(self.imgs['a'][:, :, 6]),
+            self.mean_removal(self.imgs['a'][:, :, 7])
+        )).transpose()
