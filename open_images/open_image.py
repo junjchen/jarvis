@@ -23,6 +23,8 @@ from descartes.patch import PolygonPatch
 import matplotlib.pyplot as plt
 import tifffile as tiff
 
+from read_image import scale_percentile
+
 # Needed for proper Tifffile plotting using imshow, even if editor says it is not used
 from matplotlib import pyplot
 
@@ -44,6 +46,10 @@ import pylab
 # pylab.ion()
 
 inDir = 'input'
+
+#number of training images
+N_Cls = 10
+df = pd.read_csv(inDir + '/train_wkt_v4.csv')
 
 #below for linux
 #inDir = '../input'
@@ -288,12 +294,28 @@ def visualize_image(imageId, plot_all=True):
     return (fig, axArr, ax)
 
 
-def show_image_poly(one_image_id):
+def show_image_poly(one_image_id, type = '3'):
+
+    # show the picture
+    # imread gives the values for the pictures, use scale_percentile to scale them for visualisation and such!
+    if type == '3':
+        im_rgb = tiff.imread((
+                             'input/three_band/' + one_image_id + '.tif').format(
+            one_image_id)).transpose([1, 2, 0])
+    elif type == 'A'|type == 'M'|type == 'P':
+        im_rgb = tiff.imread((
+                             'input/sixteen_band/' + one_image_id + '_' + type + '.tif').format(
+            one_image_id)).transpose([1, 2, 0])
+    else:
+        raise Exception('Type not recognised, please use \'3\', \'A\', \'M\' or \'P\'')
+
+    tiff.imshow(255 * scale_percentile(im_rgb));
 
     # read the training data from train_wkt_v4.csv
     global df, gs, trainImageIds
     df = pd.read_csv(inDir + '/train_wkt_v4.csv')
     print(df.head())
+    print(df.icol(1))
 
     # grid size will also be needed later..
     gs = pd.read_csv(inDir + '/grid_sizes.csv', names=['ImageId', 'Xmax', 'Ymin'], skiprows=1)
@@ -326,7 +348,6 @@ def show_train_poly():
 
     # read the training data from train_wkt_v4.csv
     global df, gs, trainImageIds
-    df = pd.read_csv(inDir + '/train_wkt_v4.csv')
     print(df.head())
 
     # grid size will also be needed later..
@@ -350,4 +371,3 @@ def show_train_poly():
     # Uncomment to show plot when interactive mode is off
     # (this function blocks till fig is closed)
     # plt.pyplot.show()
-
