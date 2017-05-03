@@ -62,6 +62,7 @@ def read_image(IM_ID = '6120_2_2', POLY_TYPE = '1'):
     ###im_rgb = tiff.imread('../input/three_band/6010_0_0.tif'.format(IM_ID)).transpose([1, 2, 0])
     #data on martins pc
     im_rgb = tiff.imread(('C:/Users/Martin/Documents/Southampton/Advanced Machine Learning/data/three_band/three_band/'+IM_ID+'.tif').format(IM_ID)).transpose([1, 2, 0])
+
     im_size = im_rgb.shape[:2]
 
 
@@ -77,9 +78,11 @@ def read_image(IM_ID = '6120_2_2', POLY_TYPE = '1'):
 
     train_mask = mask_for_polygons(train_polygons_scaled, im_size)
 
-    tiff.imshow(255 * scale_percentile(im_rgb[2900:3200, 2000:2300]));
+    #tiff.imshow(255 * scale_percentile(im_rgb[2900:3200, 2000:2300]));
+    tiff.imshow(255 * scale_percentile(im_rgb));
 
-    show_mask(train_mask[2900:3200,2000:2300])
+    #show_mask(train_mask[2900:3200,2000:2300])
+    show_mask(train_mask)
 
     #this actually shows the image if not interactive
     pyplot.show()
