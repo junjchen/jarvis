@@ -1,5 +1,9 @@
 # jarvis
 
+## Slides
+
+https://docs.google.com/presentation/d/14rDYPgRUGCaOCyTYQT2DIyCMpgujy3-ugW5pRGsqz8g/edit?usp=sharing
+
 ## Goal
 
 Detect and describe the shape of following objects from the high resolution satellite image
