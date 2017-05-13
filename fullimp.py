@@ -173,6 +173,7 @@ def stick_all_train():
             img = stretch_n(img)
             print(img.shape, id, np.amax(img), np.amin(img))
             x[s * i:s * i + s, s * j:s * j + s, :] = img[:s, :s, :]
+            x[s * i:s * i + s, s * j:s * j + s, :] = img[:s, :s, :]
             for z in range(N_Cls):
                 y[s * i:s * i + s, s * j:s * j + s, z] = generate_mask_for_image_and_class(
                     (img.shape[0], img.shape[1]), id, z + 1)[:s, :s]
